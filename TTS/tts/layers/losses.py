@@ -284,6 +284,7 @@ class TacotronLoss(torch.nn.Module):
         linear_input,
         stopnet_output,
         stopnet_target,
+        stop_target_length,
         output_lens,
         decoder_b_output,
         alignments,
@@ -317,7 +318,7 @@ class TacotronLoss(torch.nn.Module):
 
         # stopnet loss
         stop_loss = (
-            self.criterion_st(stopnet_output, stopnet_target, output_lens) if self.config.stopnet else torch.zeros(1)
+            self.criterion_st(stopnet_output, stopnet_target, stop_target_length ) if self.config.stopnet else torch.zeros(1)
         )
         if not self.config.separate_stopnet and self.config.stopnet:
             loss += stop_loss

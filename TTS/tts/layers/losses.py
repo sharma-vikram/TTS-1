@@ -246,9 +246,9 @@ class Huber(nn.Module):
 class TacotronLoss(torch.nn.Module):
     """Collection of Tacotron set-up based on provided config."""
 
-    def __init__(self, c, stopnet_pos_weight=10, ga_sigma=0.4):
+    def __init__(self, c, ga_sigma=0.4):
         super().__init__()
-        self.stopnet_pos_weight = stopnet_pos_weight
+        self.stopnet_pos_weight = c.stopnet_pos_weight
         self.ga_alpha = c.ga_alpha
         self.decoder_diff_spec_alpha = c.decoder_diff_spec_alpha
         self.postnet_diff_spec_alpha = c.postnet_diff_spec_alpha
@@ -274,7 +274,7 @@ class TacotronLoss(torch.nn.Module):
             self.criterion_ssim = SSIMLoss()
         # stopnet loss
         # pylint: disable=not-callable
-        self.criterion_st = BCELossMasked(pos_weight=torch.tensor(stopnet_pos_weight)) if c.stopnet else None
+        self.criterion_st = BCELossMasked(pos_weight=torch.tensor(self.stopnet_pos_weight)) if c.stopnet else None
 
     def forward(
         self,

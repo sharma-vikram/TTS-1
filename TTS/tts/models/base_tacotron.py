@@ -142,6 +142,9 @@ class BaseTacotron(BaseTTS):
         model_characters = phonemes if config.use_phonemes else symbols
         return model_characters, config
 
+    def get_criterion(self) -> nn.Module:
+        return TacotronLoss(self.config)
+
     @staticmethod
     def get_speaker_manager(config: Coqpit, restore_path: str, data: List, out_path: str = None) -> SpeakerManager:
         return get_speaker_manager(config, restore_path, data, out_path)
